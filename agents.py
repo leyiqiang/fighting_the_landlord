@@ -1,6 +1,10 @@
+from hand import Hand
+
+
 class Agents(object):
     def __init__(self):
         self.card_list = []
+        self._hand = Hand()
 
     @property
     def hand(self):
