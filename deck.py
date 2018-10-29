@@ -17,13 +17,13 @@ class Deck(object):
         return self._base_card
 
     def deal(self):
-        random_deck = random.shuffle(self._deck)
+        random.shuffle(self._deck)
         # create three public cards for landlord
-        self._base_card = random_deck[0:3]
+        self._base_card = self._deck[0:3]
         # deal deck into 17 cards
-        pile_one = random_deck[3: 20]
-        pile_two = random_deck[20: 37]
-        pile_three = random_deck[37: 54]
+        pile_one = self._deck[3: 20]
+        pile_two = self._deck[20: 37]
+        pile_three = self._deck[37: 54]
         return pile_one, pile_two, pile_three
 
     def discard(self, card_list):
