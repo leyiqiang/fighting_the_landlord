@@ -7,12 +7,11 @@ from constants import FARMER_ONE, FARMER_TWO, LANDLORD
 
 class FightingWithLandlordGame(object):
     def __init__(self):
+        # randomly choose location
         self._agent_order = random.shuffle([FARMER_ONE, FARMER_TWO, LANDLORD])
 
     def start_game(self):
-        # shuffle card
         print('Initializing players...')
-        # randomly choose location
         landlord = LandlordAgents()
         farmer_one = FarmerAgents()
         farmer_two = FarmerAgents()
