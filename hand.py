@@ -1,5 +1,6 @@
 from collections import Counter
 
+
 class Hand(object):
     def __init__(self, card_list):
         self._card_list = sorted(card_list)

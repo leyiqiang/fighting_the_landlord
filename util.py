@@ -5,20 +5,20 @@ import itertools
 class CardCombinations(object):
 
     def __init__(self):
-        self.single = set() # done
-        self.pair = set() # done
-        self.trio = set() # done
-        self.chain = set() # done
-        self.pairs_chain = set() # done
-        self.trio_single = set() # DONE
-        self.trio_pair = set() # done
-        self.airplane = set() # done
+        self.single = set()
+        self.pair = set()
+        self.trio = set()
+        self.chain = set()
+        self.pairs_chain = set()
+        self.trio_single = set()
+        self.trio_pair = set()
+        self.airplane = set()
         self.airplane_small = set()
         self.airplane_large = set()
         self.four_with_two = set()
-        self.four_with_pairs = set() # done
-        self.bomb = set() # done
-        self.king_bomb = set() # done
+        self.four_with_pairs = set()
+        self.bomb = set()
+        self.king_bomb = set()
         self.card_types = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K, TWO, BLACK_JOKER, RED_JOKER]
         self.card_types_for_chain = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K]
         self.card_combinations = None
@@ -69,25 +69,20 @@ class CardCombinations(object):
             for j in range(i + 2, len(self.card_types_for_chain)):
                 sorted_list = sorted(self.card_types_for_chain[i:j] * 3)
                 tuple_sorted_list = tuple(sorted_list)
-                cards_combinations = itertools.combinations(self.card_types, j - i)
                 # airplane
                 if len(sorted_list) <= 20:
                     self.airplane.add(tuple_sorted_list)
                 # airplane with small wings
                 if len(sorted_list) + (j - i) <= 20:
-                    for c in cards_combinations:
-                        # todo check no duplicate
-                        self.airplane_small.add(tuple_sorted_list + c)
-                        print(tuple_sorted_list+c)
+                    for c in itertools.combinations(self.card_types, j - i):
+                        if len(set(c).intersection(tuple_sorted_list)) == 0:
+                            self.airplane_small.add(tuple_sorted_list + c)
                 # airplane with large wings
                 if len(sorted_list) + (j - i) * 2 <= 20:
-                    for c in cards_combinations:
-                        # todo check no duplicate
-                        self.airplane_large.add(tuple_sorted_list + c * 2)
+                    for c in itertools.combinations(self.card_types, j - i):
+                        if len(set(c).intersection(tuple_sorted_list)) == 0:
+                            self.airplane_large.add(tuple_sorted_list + c * 2)
 
-        # print(self.airplane)
-        # print(self.airplane_small)
-        # print(self.airplane_large)
         # self.card_combinations = {
         #     SINGLE: to_set(self.single),
         #     PAIR: to_set(self.pair),
