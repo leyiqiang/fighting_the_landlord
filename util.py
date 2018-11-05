@@ -20,22 +20,7 @@ class CardCombinations(object):
         self.king_bomb = [] # done
         self.card_types = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K, TWO, BLACK_JOKER, RED_JOKER]
         self.card_types_for_chain = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K]
-        self.card_combinations = {
-            SINGLE: [],
-            PAIR: [],
-            TRIO: [],
-            CHAIN: [],
-            PAIRS_CHAIN: [],
-            TRIO_SINGLE: [],
-            TRIO_PAIR: [],
-            AIRPLANE: [],
-            AIRPLANE_SMALL: [],
-            AIRPLANE_LARGE: [],
-            FOUR_WITH_TWO: [],
-            FOUR_WITH_PAIRS: [],
-            BOMB: [],
-            KING_BOMB: []
-        }
+        self.card_combinations = None
 
 
     def get_all_combinations(self):
@@ -46,49 +31,60 @@ class CardCombinations(object):
                 self.trio.append([c] * 3)
                 self.bomb.append([c] * 4)
         self.king_bomb.append([BLACK_JOKER, RED_JOKER])
-        print(self.pair)
-        print(self.trio)
-        print(self.bomb)
-        print(self.king_bomb)
         # chain
         for i in range(0, len(self.card_types_for_chain)):
             for j in range(i + 5, len(self.card_types_for_chain)):
                 self.chain.append(self.card_types_for_chain[i:j])
-        print(self.chain)
         # pairs chain
         for i in range(0, len(self.card_types_for_chain)):
             for j in range(i + 3, len(self.card_types_for_chain)):
                 self.pairs_chain.append(sorted(self.card_types_for_chain[i:j] * 2))
-        print(self.pairs_chain)
         # trios chain (airplane)
         for i in range(0, len(self.card_types_for_chain)):
             for j in range(i + 2, len(self.card_types_for_chain)):
                 if (j - i) * 3 <= 20:
                     self.airplane.append(sorted(self.card_types_for_chain[i:j] * 3))
-        print(self.airplane)
         # trio with single card
         for t in self.trio:
             for c in self.card_types:
                 if t[0] != c:
                     self.trio_single.append(t + [c])
-        print(self.trio_single)
         # trio with pairs
         for t in self.trio:
             for p in self.pair:
                 if t[0] != p[0]:
                     self.trio_pair.append(t + p)
-        print (self.trio_pair)
         # four with two cards # todo
         for b in self.bomb:
             for c in self.card_types:
                 if b[0] != c:
                     self.four_with_two.append(b + [c])
-        print(self.trio_single)
         # bomb with pairs
         for b in self.bomb:
             for p in self.pair:
                 if b[0] != p[0]:
                     self.four_with_pairs.append(b + p)
-        print (self.four_with_pairs)
 
         #todo airplanes
+
+        self.card_combinations = {
+            SINGLE: to_set(self.single),
+            PAIR: to_set(self.pair),
+            TRIO: to_set(self.trio),
+            CHAIN: to_set(self.chain),
+            PAIRS_CHAIN: to_set(self.pairs_chain),
+            TRIO_SINGLE: to_set(self.trio_single),
+            TRIO_PAIR: to_set(self.trio_pair),
+            AIRPLANE: to_set(self.airplane),
+            AIRPLANE_SMALL: to_set(self.airplane_small),
+            AIRPLANE_LARGE: to_set(self.airplane_large),
+            FOUR_WITH_TWO: to_set(self.four_with_two),
+            FOUR_WITH_PAIRS: to_set(self.four_with_pairs),
+            BOMB: to_set(self.bomb),
+            KING_BOMB: to_set(self.king_bomb)
+        }
+        print(self.card_combinations)
+
+
+def to_set(list):
+    return set(tuple(x) for x in list)
