@@ -16,8 +16,7 @@ class FightingWithLandlordGame(object):
         landlord = LandlordAgents(landlord_hand)
         farmer_one = FarmerAgents(pile2)
         farmer_two = FarmerAgents(pile3)
-        # successors = farmer_two._hand.get_successors(self.board)
-        # print(successors)
+        farmer_two.get_successors(self.board)
 
     def start_game(self):
         pass
