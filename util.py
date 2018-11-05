@@ -5,102 +5,96 @@ import itertools
 class CardCombinations(object):
 
     def __init__(self):
-        self.single = set()
-        self.pair = set()
-        self.trio = set()
-        self.chain = set()
-        self.pairs_chain = set()
-        self.trio_single = set()
-        self.trio_pair = set()
-        self.airplane = set()
-        self.airplane_small = set()
-        self.airplane_large = set()
-        self.four_with_two = set()
-        self.four_with_pairs = set()
-        self.bomb = set()
-        self.king_bomb = set()
-        self.card_types = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K, TWO, BLACK_JOKER, RED_JOKER]
-        self.card_types_for_chain = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K]
-        self.card_combinations = None
+        self._single = set()
+        self._pair = set()
+        self._trio = set()
+        self._chain = set()
+        self._pairs_chain = set()
+        self._trio_single = set()
+        self._trio_pair = set()
+        self._airplane = set()
+        self._airplane_small = set()
+        self._airplane_large = set()
+        self._four_with_two = set()
+        self._four_with_pairs = set()
+        self._bomb = set()
+        self._king_bomb = set()
+        self._card_types = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K, TWO, BLACK_JOKER, RED_JOKER]
+        self._card_types_for_chain = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K]
+        self.get_all_combinations()
+
+    def __iter__(self):
+        yield from {
+            SINGLE: self._single,
+            PAIR: self._pair,
+            TRIO: self._trio,
+            CHAIN: self._chain,
+            PAIRS_CHAIN: self._pairs_chain,
+            TRIO_SINGLE: self._trio_single,
+            TRIO_PAIR: self._trio_pair,
+            AIRPLANE: self._airplane,
+            AIRPLANE_SMALL: self._airplane_small,
+            AIRPLANE_LARGE: self._airplane_large,
+            FOUR_WITH_TWO: self._four_with_two,
+            FOUR_WITH_PAIRS: self._four_with_pairs,
+            BOMB: self._bomb,
+            KING_BOMB: self._king_bomb
+        }.items()
 
     def get_all_combinations(self):
-        for c in self.card_types:
-            self.single.add((c,))
+        for c in self._card_types:
+            self._single.add((c,))
             if c < BLACK_JOKER:
-                self.pair.add((c,) * 2)
-                self.trio.add((c,) * 3)
-                self.bomb.add((c,) * 4)
-        self.king_bomb.add((BLACK_JOKER, RED_JOKER))
+                self._pair.add((c,) * 2)
+                self._trio.add((c,) * 3)
+                self._bomb.add((c,) * 4)
+        self._king_bomb.add((BLACK_JOKER, RED_JOKER))
         # chain
-        for i in range(0, len(self.card_types_for_chain)):
-            for j in range(i + 5, len(self.card_types_for_chain)):
-                self.chain.add(tuple(self.card_types_for_chain[i:j]))
+        for i in range(0, len(self._card_types_for_chain)):
+            for j in range(i + 5, len(self._card_types_for_chain)):
+                self._chain.add(tuple(self._card_types_for_chain[i:j]))
         # pairs chain
-        for i in range(0, len(self.card_types_for_chain)):
-            for j in range(i + 3, len(self.card_types_for_chain)):
-                sorted_list = sorted(self.card_types_for_chain[i:j] * 2)
-                self.pairs_chain.add(tuple(sorted_list))
+        for i in range(0, len(self._card_types_for_chain)):
+            for j in range(i + 3, len(self._card_types_for_chain)):
+                sorted_list = sorted(self._card_types_for_chain[i:j] * 2)
+                self._pairs_chain.add(tuple(sorted_list))
         # trio with single card
-        for t in self.trio:
-            for c in self.card_types:
+        for t in self._trio:
+            for c in self._card_types:
                 if t[0] != c:
-                    self.trio_single.add(t + (c,))
+                    self._trio_single.add(t + (c,))
         # trio with pairs
-        for t in self.trio:
-            for p in self.pair:
+        for t in self._trio:
+            for p in self._pair:
                 if t[0] != p[0]:
-                    self.trio_pair.add(t + p)
+                    self._trio_pair.add(t + p)
         # four with two cards
-        two_cards_combinations = itertools.combinations(self.card_types, 2)
-        for b in self.bomb:
+        two_cards_combinations = itertools.combinations(self._card_types, 2)
+        for b in self._bomb:
             for c in two_cards_combinations:
                 if b[0] != c[0] and b[0] != c[1]:
-                    self.four_with_two.add(b+c)
-        print(self.four_with_two)
+                    self._four_with_two.add(b + c)
         # bomb with pairs
-        for b in self.bomb:
-            for p in self.pair:
+        for b in self._bomb:
+            for p in self._pair:
                 if b[0] != p[0]:
-                    self.four_with_pairs.add(b + p)
+                    self._four_with_pairs.add(b + p)
 
-        print(self.four_with_pairs)
         # airplane combos
-        for i in range(0, len(self.card_types_for_chain)):
-            for j in range(i + 2, len(self.card_types_for_chain)):
-                sorted_list = sorted(self.card_types_for_chain[i:j] * 3)
+        for i in range(0, len(self._card_types_for_chain)):
+            for j in range(i + 2, len(self._card_types_for_chain)):
+                sorted_list = sorted(self._card_types_for_chain[i:j] * 3)
                 tuple_sorted_list = tuple(sorted_list)
                 # airplane
                 if len(sorted_list) <= 20:
-                    self.airplane.add(tuple_sorted_list)
+                    self._airplane.add(tuple_sorted_list)
                 # airplane with small wings
                 if len(sorted_list) + (j - i) <= 20:
-                    for c in itertools.combinations(self.card_types, j - i):
+                    for c in itertools.combinations(self._card_types, j - i):
                         if len(set(c).intersection(tuple_sorted_list)) == 0:
-                            self.airplane_small.add(tuple_sorted_list + c)
+                            self._airplane_small.add(tuple_sorted_list + c)
                 # airplane with large wings
                 if len(sorted_list) + (j - i) * 2 <= 20:
-                    for c in itertools.combinations(self.card_types, j - i):
+                    for c in itertools.combinations(self._card_types, j - i):
                         if len(set(c).intersection(tuple_sorted_list)) == 0:
-                            self.airplane_large.add(tuple_sorted_list + c * 2)
-
-        # self.card_combinations = {
-        #     SINGLE: to_set(self.single),
-        #     PAIR: to_set(self.pair),
-        #     TRIO: to_set(self.trio),
-        #     CHAIN: to_set(self.chain),
-        #     PAIRS_CHAIN: to_set(self.pairs_chain),
-        #     TRIO_SINGLE: to_set(self.trio_single),
-        #     TRIO_PAIR: to_set(self.trio_pair),
-        #     AIRPLANE: to_set(self.airplane),
-        #     AIRPLANE_SMALL: to_set(self.airplane_small),
-        #     AIRPLANE_LARGE: to_set(self.airplane_large),
-        #     FOUR_WITH_TWO: to_set(self.four_with_two),
-        #     FOUR_WITH_PAIRS: to_set(self.four_with_pairs),
-        #     BOMB: to_set(self.bomb),
-        #     KING_BOMB: to_set(self.king_bomb)
-        # }
-        # print(self.card_combinations)
-
-#
-# def to_set(list):
-#     return set(tuple(x) for x in list)
+                            self._airplane_large.add(tuple_sorted_list + c * 2)
