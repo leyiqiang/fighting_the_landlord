@@ -1,24 +1,25 @@
-from deck import Deck
+from board import Board
 from farmer_agents import FarmerAgents
 from landlord_agents import LandlordAgents
-import random
+from util import CardCombinations
 from constants import FARMER_ONE, FARMER_TWO, LANDLORD
 
 
 class FightingWithLandlordGame(object):
     def __init__(self):
-        # randomly choose location
-        self._agent_order = random.shuffle([FARMER_ONE, FARMER_TWO, LANDLORD])
+        self._board = Board()
+
+    def setup(self):
+        print('Shuffle and dealing cards...')
+        pile1, pile2, pile3 = self._board.deal()
+        landlord_hand = pile1 + self._board.base_card
+
+        landlord = LandlordAgents(landlord_hand)
+        farmer_one = FarmerAgents(pile2)
+        farmer_two = FarmerAgents(pile3)
+        cb = CardCombinations()
+        cb.get_all_combinations()
 
     def start_game(self):
-        print('Initializing players...')
-        landlord = LandlordAgents()
-        farmer_one = FarmerAgents()
-        farmer_two = FarmerAgents()
-        print('Shuffle and dealing cards...')
-        deck = Deck()
-        pile1, pile2, pile3 = deck.deal()
-        landlord.card_list = pile1 + deck.base_card
-        farmer_one.card_list = pile2
-        farmer_two.card_list = pile3
-        print(deck.base_card)
+
+        pass

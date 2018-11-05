@@ -1,15 +1,18 @@
+from collections import Counter
+
 class Hand(object):
-    # track current player's hand
-    # get possible combinations
-    # get successors based on previous turn(in ROUND)
-    # play cards
-    def __init__(self):
-        self._card_list = []
+    def __init__(self, card_list):
+        self._card_list = sorted(card_list)
+        self._single = []
+        self._pair = []
+        self._trio = []
+        self._bomb = []
+        self._king_bomb = []
+        self._chain = []
+        self._is_pass = False
+        self._counter = Counter(card_list)
 
-    @property
-    def card_list(self):
-        return self._card_list
 
-    @card_list.setter
-    def card_list(self, card_list):
-        self._card_list = card_list
+    def get_successors(self, card_list):
+        #todo
+        pass

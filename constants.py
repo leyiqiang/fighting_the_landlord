@@ -37,6 +37,8 @@ BOMB = 'BOMB'
 # colored joker with black-and-white joker cards (biggest bomb)
 KING_BOMB = 'KING_BOMB'
 
+PASS = 'PASS'
+
 
 """
 Card values:
