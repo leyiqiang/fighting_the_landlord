@@ -1,5 +1,5 @@
 from hand import Hand
-
+import pprint
 
 class Agents(object):
     def __init__(self, card_list):
@@ -8,4 +8,5 @@ class Agents(object):
     def get_successors(self, board):
         print(self._hand.card_list)
         successors = self._hand.get_successors(board)
-        print(successors)
+        pp = pprint.PrettyPrinter()
+        pp.pprint(successors)

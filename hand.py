@@ -4,7 +4,8 @@ from constants import *
 
 class Hand(object):
     def __init__(self, card_list):
-        self._card_list = Counter(sorted(card_list))
+        self._card_list = sorted(card_list)
+        self._card_counter = Counter(self._card_list)
         self._single = []
         self._pair = []
         self._trio = []
@@ -28,10 +29,11 @@ class Hand(object):
         for combo_type, combo_list in card_combinations.items():
             if combo_type == play_type or play_type == PASS:
                 for combo in combo_list:
-                    intersection = (Counter(combo) & Counter(self._card_list)).elements()
+                    intersection = (Counter(combo) & Counter(self._card_counter)).elements()
                     if len(list(intersection)) == len(combo):
-                        successors.append((combo_type, combo.elements, self.get_cards_left(combo)))
+                        successors.append((combo_type, combo, self.get_cards_left(combo)))
         return successors
 
     def get_cards_left(self, card_list):
-        return self._card_list - Counter(card_list)
+        counter = self._card_counter - Counter(card_list)
+        return list(counter.elements())
