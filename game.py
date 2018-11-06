@@ -42,18 +42,25 @@ class FightingWithLandlordGame(object):
             self._landlord = PlayerAgents(landlord_hand)
             self._farmer_one = FarmerAgents(pile2)
             self._farmer_two = FarmerAgents(pile3)
+        print('landlord hand:{}'.format(sorted(landlord_hand)))
+        print('farmer1 hand:{}'.format(sorted(pile2)))
+        print('farmer2 hand:{}'.format(sorted(pile3)))
         print('***GAME START***')
         self.start_game()
 
     def start_game(self):
+        is_first_round = True
         for turn in itertools.cycle(self.board.agent_order):
             action = None
+            if is_first_round and turn != LANDLORD:
+                continue
             if turn == FARMER_ONE:
                 action = self._farmer_one.get_action(self.board)
             if turn == FARMER_TWO:
                 action = self._farmer_two.get_action(self.board)
             if turn == LANDLORD:
                 action = self._landlord.get_action(self.board)
+                is_first_round = False
             self.board.play(action, turn)
 
 

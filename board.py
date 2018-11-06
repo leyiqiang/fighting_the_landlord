@@ -67,15 +67,14 @@ class Board(object):
     def play(self, action, player):
         print('{0} plays {1}'.format(player, action))
         play_type, card_list, len_card_left = action
-        if play_type == PASS and self._pass_count < 2:
-            self._pass_count += 1
-        if self._pass_count < 2:
-            return
-        self._previous_play = (play_type, card_list)
-        self._discard(card_list)
         if len_card_left == 0:
             print('*** GAME OVER, {0} WIN ***'.format(player))
             sys.exit(0)
+        if play_type == PASS and self._pass_count < 2:
+            self._pass_count += 1
+            return
+        self._previous_play = (play_type, card_list)
+        self._discard(card_list)
 
     def _discard(self, card_list):
         self._discarded_card.append(card_list)
