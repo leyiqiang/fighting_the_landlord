@@ -18,20 +18,24 @@ class Hand(object):
     def card_list(self):
         return self._card_list
 
-    def get_successors(self, board):
+    @card_list.setter
+    def card_list(self, new_list):
+        self._card_list = new_list
+
+    def get_successors(self, previous_play, card_combinations):
         """
-        :param board: an Object that keeps track of state of the game
         :return: a list of tuple (play_type, card_list, cards_left)
         """
         successors = []
-        play_type, card_list = board.previous_play
-        card_combinations = board.card_combinations
+        play_type, card_list = previous_play
+        card_combinations = card_combinations
         for combo_type, combo_list in card_combinations.items():
             if combo_type == play_type or play_type == PASS:
                 for combo in combo_list:
                     intersection = (Counter(combo) & Counter(self._card_counter)).elements()
                     if len(list(intersection)) == len(combo):
                         successors.append((combo_type, combo, self.get_cards_left(combo)))
+        successors.append(('PASS', (), self.get_cards_left(())))
         return successors
 
     def get_cards_left(self, card_list):

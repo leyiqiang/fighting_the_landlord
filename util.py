@@ -1,5 +1,7 @@
 from constants import *
 import itertools
+import sys
+import inspect
 
 
 class CardCombinations(object):
@@ -19,8 +21,8 @@ class CardCombinations(object):
         self._four_with_pairs = set()
         self._bomb = set()
         self._king_bomb = set()
-        self._card_types = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K, TWO, BLACK_JOKER, RED_JOKER]
-        self._card_types_for_chain = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K]
+        self._card_types = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K, A, TWO, BLACK_JOKER, RED_JOKER]
+        self._card_types_for_chain = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K, A]
         self.get_all_combinations()
 
     def __iter__(self):
@@ -98,3 +100,12 @@ class CardCombinations(object):
                     for c in itertools.combinations(self._card_types, j - i):
                         if len(set(c).intersection(tuple_sorted_list)) == 0:
                             self._airplane_large.add(tuple_sorted_list + c * 2)
+
+
+def raise_not_defined():
+    file_name = inspect.stack()[1][1]
+    line = inspect.stack()[1][2]
+    method = inspect.stack()[1][3]
+
+    print("*** Method not implemented: %s at line %s of %s" % (method, line, file_name))
+    sys.exit(1)
