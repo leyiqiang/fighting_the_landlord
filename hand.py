@@ -38,6 +38,14 @@ class Hand(object):
         successors.append(('PASS', (), self.get_cards_left(())))
         return successors
 
+    @staticmethod
+    def get_utility(self, action):
+        _, _, cards_left = action
+        if len(cards_left) == 0:
+            return 1
+        else:
+            return 0
+
     def get_cards_left(self, card_list):
         counter = self._card_counter - Counter(card_list)
         return list(counter.elements())
