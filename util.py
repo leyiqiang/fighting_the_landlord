@@ -2,6 +2,7 @@ from constants import *
 import itertools
 import sys
 import inspect
+import random
 
 
 class CardCombinations(object):
@@ -114,4 +115,14 @@ def raise_not_defined():
     sys.exit(1)
 
 
-
+def deal():
+    deck_without_joker = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K, A, TWO] * 4
+    deck = deck_without_joker + [BLACK_JOKER, RED_JOKER]
+    random.shuffle(deck)
+    # create three public cards for landlord
+    base_card = deck[0:3]
+    # deal deck into 17 cards
+    pile_one = deck[3: 20]
+    pile_two = deck[20: 37]
+    pile_three = deck[37: 54]
+    return base_card, pile_one, pile_two, pile_three
