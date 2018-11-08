@@ -1,43 +1,37 @@
 from constants import *
 import random
 from util import CardCombinations
-import sys
 
 
-class Board(object):
+class BoardData(object):
     # track the state of the game
-    def __init__(self):
-        deck_without_joker = [THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K, A, TWO] * 4
-        self._deck = deck_without_joker + [BLACK_JOKER, RED_JOKER]
-        self._base_card = []  # the card landlord holds
-        self._discarded_card = []  # discarded cards
-        self._previous_play = (PASS, [])
-        self._agent_order = [FARMER_ONE, FARMER_TWO, LANDLORD]
-        random.shuffle(self._agent_order)
-        self._current_round = 0
-        self._pass_count = 0
-        self._card_combinations = CardCombinations()
-
-    @property
-    def base_card(self):
-        return self._base_card
-
-    @property
-    def discarded_card(self):
-        return self._discarded_card
-
-    @property
-    def previous_play(self):
-        return self._previous_play
-
-    @property
-    def agent_order(self):
-        return self._agent_order
+    def __init__(self, prev_data=None):
+        if prev_data:
+            self.base_card = prev_data.base_card  # the card landlord holds
+            self.discarded_card = prev_data.discarded_card  # discarded cards
+            self.previous_play = prev_data.previous_play
+            self.agent_order = prev_data.agent_order # todo
+            self.current_turn = prev_data.current_turn
+            self.pass_count = prev_data.pass_count
+            self.card_combinations = prev_data.card_combinations
+            self.is_terminal = prev_data.is_terminal
+            self.winner = prev_data.winner
+        else:
+            self.base_card = []  # the card landlord holds
+            self.discarded_card = []  # discarded cards
+            self.previous_play = (PASS, [])
+            farmer_order = random.sample([FARMER_ONE, FARMER_TWO], 2)
+            self.agent_order = [LANDLORD] + farmer_order
+            self.current_turn = LANDLORD
+            self.pass_count = 0
+            self.card_combinations = CardCombinations()
+            self.is_terminal = False
+            self.winner = None
 
     @property
     def agent_order_pretty(self):
         pretty_order = []
-        for o in self._agent_order:
+        for o in self.agent_order:
             if o == FARMER_ONE:
                 pretty_order.append('farmer1')
             if o == FARMER_TWO:
@@ -46,35 +40,33 @@ class Board(object):
                 pretty_order.append('landlord')
         return pretty_order
 
-    @property
-    def current_round(self):
-        return self._current_round
+    def get_next_player(self):
+        current_turn_index = self.agent_order.index(self.current_turn)
+        return self.agent_order[(current_turn_index + 1) % 3]
 
-    @property
-    def card_combinations(self):
-        return dict(self._card_combinations)
+    def copy(self):
+        state = BoardData(self)
 
-    def deal(self):
-        random.shuffle(self._deck)
-        # create three public cards for landlord
-        self._base_card = self._deck[0:3]
-        # deal deck into 17 cards
-        pile_one = self._deck[3: 20]
-        pile_two = self._deck[20: 37]
-        pile_three = self._deck[37: 54]
-        return pile_one, pile_two, pile_three
+        state.base_card = self.base_card
+        state.discarded_card = self.discarded_card
+        state.previous_play = self.previous_play
+        state.agent_order = self.agent_order
+        state.current_turn = self.current_turn
+        state.pass_count = self.pass_count
+        state.is_terminal = self.is_terminal
+        state.winnder = self.winner
+        return state
 
-    def play(self, action, player):
-        print('{0} plays {1}'.format(player, action))
+    def next_state(self, action):
+        next_state = self.copy()
         play_type, card_list, len_card_left = action
         if len_card_left == 0:
-            print('*** GAME OVER, {0} WIN ***'.format(player))
-            sys.exit(0)
-        if play_type == PASS and self._pass_count < 2:
-            self._pass_count += 1
-            return
-        self._previous_play = (play_type, card_list)
-        self._discard(card_list)
-
-    def _discard(self, card_list):
-        self._discarded_card.append(card_list)
+            next_state.is_terminal = True
+            next_state.winner = self.current_turn
+        if play_type == PASS and self.pass_count < 2:
+            next_state.pass_count += 1
+            return next_state
+        next_state.previous_play = (play_type, card_list)
+        next_state.current_turn = self.get_next_player()
+        next_state.discarded_card = self.discarded_card + list(card_list)
+        return next_state

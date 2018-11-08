@@ -102,6 +102,9 @@ class CardCombinations(object):
                             self._airplane_large.add(tuple_sorted_list + c * 2)
 
 
+card_combinations = dict(CardCombinations())
+
+
 def raise_not_defined():
     file_name = inspect.stack()[1][1]
     line = inspect.stack()[1][2]
@@ -109,3 +112,6 @@ def raise_not_defined():
 
     print("*** Method not implemented: %s at line %s of %s" % (method, line, file_name))
     sys.exit(1)
+
+
+
