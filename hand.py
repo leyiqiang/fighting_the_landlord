@@ -17,7 +17,7 @@ class Hand(object):
             for combo_type, combo in all_combos:
                 if combo_type == play_type or play_type == PASS:
                     intersection = (Counter(combo) & Counter(current_hand)).elements()
-                    if len(list(intersection)) == len(list(combo)):
+                    if len(list(intersection)) == len(list(combo)) and len(list(combo)) == len(card_list):
                         if play_type == PASS or combo[0] > card_list[0]:
                             successors.append((combo_type, combo))
             if play_type != PASS:
@@ -47,7 +47,13 @@ class Hand(object):
             return PASS, ()
         for combo_type, combo_list in card_combinations.items():
             for combo in combo_list:
-                intersection = (Counter(combo) & Counter(card_input)).elements()
-                if len(list(intersection)) == len(card_input) and (play_type == PASS or card_list[0] < combo[0]):
+                # intersection = (Counter(combo) & Counter(card_input)).elements()
+                # if len(list(intersection)) == len(combo):
+                #     print(list(intersection))
+                #     print(combo)
+                print(sorted(card_input))
+                print(sorted(combo))
+                print(combo)
+                if sorted(list(card_input)) == sorted(list(combo)) and (play_type == PASS or card_list[0] < combo[0]):
                     return combo_type, combo
         raise ValueError('Invalid Play')
