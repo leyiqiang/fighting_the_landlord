@@ -43,7 +43,7 @@ class Hand(object):
     def get_combo_type(previous_play, card_input):
         # current_hand = Counter(card_list)
         play_type, card_list = previous_play
-        if card_list == PASS:
+        if card_list[0] == PASS:
             return PASS
         for combo_type, combo_list in card_combinations.items():
             for combo in combo_list:
