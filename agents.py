@@ -1,7 +1,6 @@
 from hand import Hand
-import pprint
 from util import raise_not_defined
-
+from constants import card_pretty_name
 
 class Agents:
     def __init__(self, agent_id):
@@ -40,15 +39,17 @@ class ManualAgent(Agents):
     def get_action(self, board):
         while True:
             print('Your hand:')
-            print(sorted(board.get_hands(board.turn)))
+            sorted_hand = sorted(board.get_hands(board.turn))
+            # sorted_hand_pretty = [card_pretty_name[name] for name in sorted_hand]
+            print(sorted_hand)
             result = input('What are you going to play?\n')
             try:
                 card_list = result.split(',')
-                card_list_int = list(map(int, card_list))
+                card_list_int = sorted(list(map(int, card_list)))
                 play = tuple(card_list_int)
-                combo_type = Hand.get_combo_type(play)
+                combo_type = Hand.get_combo_type(board.previous_play, play)
                 return combo_type, play
-            except Exception:
+            except Exception as e:
                 print('Invalid input or play, please try again.')
 
 

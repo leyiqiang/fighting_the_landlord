@@ -18,7 +18,8 @@ class Hand(object):
                 if combo_type == play_type or play_type == PASS:
                     intersection = (Counter(combo) & Counter(current_hand)).elements()
                     if len(list(intersection)) == len(list(combo)):
-                        successors.append((combo_type, combo))
+                        if play_type == PASS or combo[0] > card_list[0]:
+                            successors.append((combo_type, combo))
             if play_type != PASS:
                 successors.append((PASS, ()))
             return successors
@@ -39,12 +40,15 @@ class Hand(object):
     #     counter = self._card_counter - Counter(card_list)
     #     return list(counter.elements())
     @staticmethod
-    def get_combo_type(card_list):
+    def get_combo_type(previous_play, card_input):
         # current_hand = Counter(card_list)
+        play_type, card_list = previous_play
         if card_list == PASS:
             return PASS
         for combo_type, combo_list in card_combinations.items():
             for combo in combo_list:
-                if combo == card_list:
+                if (combo == card_input):
+                    print(play_type == PASS)
+                if combo == card_input and (play_type == PASS or card_list[0] < card_input[0]):
                     return combo_type
         raise ValueError('Invalid Play')

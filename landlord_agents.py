@@ -1,7 +1,6 @@
 from agents import Agents, MultiAgentSearch, ManualAgent
 import random
-from hand import Hand
-import copy
+
 
 class ReflexAgent(Agents):
 
@@ -69,7 +68,7 @@ class AlphaBetaAgent(MultiAgentSearch):
 
     def __init__(self, agent_id):
         Agents.__init__(self, agent_id)
-        self.max_depth = 1
+        self.max_depth = 3
 
     # successors is a list of tuple (play_type, card_list)
     def get_action(self, board_state):
