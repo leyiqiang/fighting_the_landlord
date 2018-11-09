@@ -49,6 +49,5 @@ class Hand(object):
             for combo in combo_list:
                 intersection = (Counter(combo) & Counter(card_input)).elements()
                 if len(list(intersection)) == len(card_input) and (play_type == PASS or card_list[0] < combo[0]):
-                    print(combo[0])
                     return combo_type, combo
         raise ValueError('Invalid Play')
