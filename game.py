@@ -34,7 +34,7 @@ class FightingWithLandlordGame(object):
             self._landlord = LandlordAgents(LANDLORD)
             self._farmer_one = FarmerAgents(FARMER_ONE)
             self._farmer_two = PlayerAgents(FARMER_TWO)
-        if player == LANDLORD or True:
+        if player == LANDLORD:
             print('You are landlord!')
             PlayerAgents = getattr(landlord_agents, game_parser.player_agent)
             self._landlord = PlayerAgents(LANDLORD)

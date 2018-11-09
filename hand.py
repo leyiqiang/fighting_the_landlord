@@ -38,3 +38,13 @@ class Hand(object):
     # def get_cards_left(self, card_list):
     #     counter = self._card_counter - Counter(card_list)
     #     return list(counter.elements())
+    @staticmethod
+    def get_combo_type(card_list):
+        # current_hand = Counter(card_list)
+        if card_list == PASS:
+            return PASS
+        for combo_type, combo_list in card_combinations.items():
+            for combo in combo_list:
+                if combo == card_list:
+                    return combo_type
+        raise ValueError('Invalid Play')

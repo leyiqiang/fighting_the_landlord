@@ -22,15 +22,14 @@ class MultiAgentSearch(Agents):
         self.max_depth = max_depth
 
     def evaluate(self, board):
-        if board.is_win(self.agent_id):
-            return 1
-        if board.is_loose(self.agent_id):
-            return -1
-        return 0
+        if board.is_win(board.turn):
+            return 1000
+        if board.is_loose(board.turn):
+            return -1000
+        return 20 - len(board.get_hands(board.turn))
+        # return 0
 
     def is_terminal(self, depth, board):
-        # print(depth)
-        # print(self.max_depth)
         return board.is_terminal or depth >= self.max_depth
 
 
@@ -39,5 +38,17 @@ class ManualAgent(Agents):
         Agents.__init__(self, card_list)
 
     def get_action(self, board):
-        pass
+        while True:
+            print('Your hand:')
+            print(sorted(board.get_hands(board.turn)))
+            result = input('What are you going to play?\n')
+            try:
+                card_list = result.split(',')
+                card_list_int = list(map(int, card_list))
+                play = tuple(card_list_int)
+                combo_type = Hand.get_combo_type(play)
+                return combo_type, play
+            except Exception:
+                print('Invalid input or play, please try again.')
+
 

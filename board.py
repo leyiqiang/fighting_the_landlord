@@ -128,10 +128,19 @@ class HandsFaceUpBoardData(object):
         return self.hands[agent_id]
 
     def is_win(self, agent_id):
-        return self.is_terminal and len(self.get_hands(agent_id)) == 0
+        if agent_id == FARMER_ONE or agent_id == FARMER_TWO:
+            is_win = self.is_terminal and \
+                     (len(self.get_hands(FARMER_ONE)) == 0 or
+                      len(self.get_hands(FARMER_TWO)) == 0)
+            return is_win
+        else:
+            return self.is_terminal and len(self.get_hands(LANDLORD)) == 0
 
     def is_loose(self, agent_id):
-        return self.is_terminal and len(self.get_hands(agent_id)) > 0
+        if agent_id == LANDLORD:
+            return self.is_terminal and len(self.get_hands(LANDLORD)) > 0
+        else:
+            return self.is_terminal and len(self.get_hands(FARMER_ONE)) > 0 and len(self.get_hands(FARMER_TWO)) > 0
 
     def get_position(self, agent_id):
         pos = self.agent_order.index(agent_id)

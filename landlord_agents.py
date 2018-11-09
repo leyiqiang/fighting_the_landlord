@@ -1,4 +1,4 @@
-from agents import Agents, MultiAgentSearch
+from agents import Agents, MultiAgentSearch, ManualAgent
 import random
 from hand import Hand
 import copy
@@ -11,11 +11,18 @@ class ReflexAgent(Agents):
         return card_type, card_list
 
 
-class MiniMaxAgent(MultiAgentSearch):
+class ManualTerminalAgent(ManualAgent):
+    def __init__(self, agent_id):
+        ManualAgent.__init__(self, agent_id)
 
+
+class MiniMaxAgent(MultiAgentSearch):
+    """
+    A minimax agent will take really long time to calculate
+    """
     def __init__(self, agent_id):
         Agents.__init__(self, agent_id)
-        self.max_depth = 3
+        self.max_depth = 2
 
     # successors is a list of tuple (play_type, card_list)
     def get_action(self, board_state):
@@ -24,18 +31,18 @@ class MiniMaxAgent(MultiAgentSearch):
         next_action = None
         for a in actions:
             next_state = board_state.next_state(a)
-            min_val = self.get_min_value(self.agent_id, 0, next_state)
+            min_val = self.get_min_value(0, next_state)
             if min_val > max_val:
                 max_val = min_val
                 next_action = a
         return next_action
 
-    def get_min_value(self, agent_id, current_depth, current_state):
-        actions = current_state.get_actions(agent_id)
+    def get_min_value(self, current_depth, current_state):
+        actions = current_state.get_actions(current_state.turn)
         values = []
         if self.is_terminal(current_depth, current_state):
             return self.evaluate(current_state)
-        if current_state.get_position(self.agent_id) == 2:  # last min, return to landlord
+        if current_state.get_position(current_state.turn) == 2:  # last min, return to landlord
             for a in actions:
                 next_state = current_state.next_state(a)
                 values.append(self.get_max_value(current_depth + 1, next_state))
@@ -43,7 +50,7 @@ class MiniMaxAgent(MultiAgentSearch):
         else:  # next player is still farmer, get min
             for a in actions:
                 next_state = current_state.next_state(a)
-                values.append(self.get_min_value(next_state.turn, current_depth, next_state))
+                values.append(self.get_min_value(current_depth, next_state))
             return min(values)
 
     def get_max_value(self, current_depth, current_state):
@@ -54,7 +61,7 @@ class MiniMaxAgent(MultiAgentSearch):
             values = []
             for a in actions:
                 next_state = current_state.next_state(a)
-                values.append(self.get_min_value(next_state.turn, current_depth + 1, next_state))
+                values.append(self.get_min_value(current_depth + 1, next_state))
             return max(values)
 
 
@@ -73,20 +80,21 @@ class AlphaBetaAgent(MultiAgentSearch):
         next_action = None
         for a in actions:
             next_state = board_state.next_state(a)
-            min_val = self.get_min_value(next_state.turn, 0, next_state, alpha, beta)
-            if min_val > max_val:
-                max_val = min_val
+            val = self.get_min_value(0, next_state, alpha, beta)
+            if max_val < val:
+                max_val = val
                 next_action = a
             alpha = max(alpha, max_val)
         return next_action
 
-    def get_min_value(self, agent_id, current_depth, current_state, alpha, beta):
+    def get_min_value(self, current_depth, current_state, alpha, beta):
         min_val = float('+inf')
-        actions = current_state.get_actions(agent_id)
+        actions = current_state.get_actions(current_state.turn)
         if self.is_terminal(current_depth, current_state):
             return self.evaluate(current_state)
         if current_state.get_position(current_state.turn) == 2:  # last min, return to landlord
             for a in actions:
+                # print(a)
                 next_state = current_state.next_state(a)
                 min_val = min(min_val, self.get_max_value(current_depth + 1, next_state, alpha, beta))
                 if min_val < alpha:
@@ -96,11 +104,7 @@ class AlphaBetaAgent(MultiAgentSearch):
         else:  # next player is still farmer, get min
             for a in actions:
                 next_state = current_state.next_state(a)
-                min_val = min(min_val, self.get_min_value(next_state.turn,
-                                                          current_depth,
-                                                          next_state,
-                                                          alpha,
-                                                          beta))
+                min_val = min(min_val, self.get_min_value(current_depth, next_state, alpha, beta))
                 if min_val < alpha:
                     return min_val
                 beta = min(min_val, beta)
@@ -111,13 +115,11 @@ class AlphaBetaAgent(MultiAgentSearch):
         if self.is_terminal(current_depth, current_state):
             return self.evaluate(current_state)
         else:
-            actions = current_state.get_actions(self.agent_id)
-            values = []
+            actions = current_state.get_actions(current_state.turn)
             for a in actions:
                 next_state = current_state.next_state(a)
-                max_val = max(max_val, self.get_min_value(next_state.turn, current_depth, next_state, alpha, beta))
+                max_val = max(max_val, self.get_min_value(current_depth, next_state, alpha, beta))
                 if max_val > beta:
                     return max_val
                 alpha = max(alpha, max_val)
-                # values.append(self.get_min_value(next_state.current_turn, current_depth + 1, next_state))
             return max_val
