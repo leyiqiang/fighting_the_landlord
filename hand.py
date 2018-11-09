@@ -47,6 +47,7 @@ class Hand(object):
             return PASS
         for combo_type, combo_list in card_combinations.items():
             for combo in combo_list:
-                if combo == card_input and (play_type == PASS or card_list[0] < card_input[0]):
+                intersection = (Counter(combo) & Counter(card_input)).elements()
+                if len(list(intersection)) == len(card_input) and (play_type == PASS or card_list[0] < combo[0]):
                     return combo_type
         raise ValueError('Invalid Play')
