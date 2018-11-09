@@ -40,9 +40,9 @@ class FightingWithLandlordGame(object):
             self._landlord = PlayerAgents(LANDLORD)
             self._farmer_one = FarmerAgents(FARMER_ONE)
             self._farmer_two = FarmerAgents(FARMER_TWO)
-        # print('landlord hand:{}'.format(sorted(self.board_state.hands[LANDLORD])))
-        # print('farmer1 hand:{}'.format(sorted(self.board_state.hands[FARMER_ONE])))
-        # print('farmer2 hand:{}'.format(sorted(self.board_state.hands[FARMER_TWO])))
+        print('landlord hand:{}'.format(sorted(self.board_state.hands[LANDLORD])))
+        print('farmer1 hand:{}'.format(sorted(self.board_state.hands[FARMER_ONE])))
+        print('farmer2 hand:{}'.format(sorted(self.board_state.hands[FARMER_TWO])))
 
     def start_game(self):
         print('***GAME START***')

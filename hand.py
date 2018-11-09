@@ -8,20 +8,29 @@ class Hand(object):
     @staticmethod
     def get_successors(previous_play, current_hand, all_combos):
         """
-        :return: a list of tuple (play_type, card_list)
+        :return: a list of tuple (prev_play_type, prev_card_list)
         """
         if all_combos is not None:
             current_hand = Counter(current_hand)
             successors = []
-            play_type, card_list = previous_play
+            prev_play_type, prev_card_list = previous_play
             for combo_type, combo in all_combos:
-                if combo_type == play_type or play_type == PASS:
-                    intersection = (Counter(combo) & Counter(current_hand)).elements()
-                    if len(list(intersection)) == len(list(combo)) and len(list(combo)) == len(card_list):
-                        if play_type == PASS or combo[0] > card_list[0]:
+                intersection = (Counter(combo) & Counter(current_hand)).elements()
+                if len(list(intersection)) == len(list(combo)):
+                    if prev_play_type == PASS:
+                        successors.append((combo_type, combo))
+                    elif combo_type == BOMB:
+                        if prev_play_type == BOMB:
+                            if combo[0] > prev_card_list[0]:
+                                successors.append((combo_type, combo))
+                        elif prev_play_type != KING_BOMB:
                             successors.append((combo_type, combo))
-            if play_type != PASS:
-                successors.append((PASS, ()))
+                    elif combo_type == KING_BOMB:
+                        successors.append((combo_type, combo))
+                    elif combo_type == prev_play_type and combo[0] > prev_card_list[0] and \
+                            len(list(combo)) == len(prev_card_list):
+                        successors.append((combo_type, combo))
+            successors.append((PASS, ()))
             return successors
 
     @staticmethod
@@ -47,13 +56,6 @@ class Hand(object):
             return PASS, ()
         for combo_type, combo_list in card_combinations.items():
             for combo in combo_list:
-                # intersection = (Counter(combo) & Counter(card_input)).elements()
-                # if len(list(intersection)) == len(combo):
-                #     print(list(intersection))
-                #     print(combo)
-                print(sorted(card_input))
-                print(sorted(combo))
-                print(combo)
                 if sorted(list(card_input)) == sorted(list(combo)) and (play_type == PASS or card_list[0] < combo[0]):
                     return combo_type, combo
         raise ValueError('Invalid Play')
