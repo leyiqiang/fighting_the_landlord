@@ -56,6 +56,9 @@ class Hand(object):
             return PASS, ()
         for combo_type, combo_list in card_combinations.items():
             for combo in combo_list:
-                if sorted(list(card_input)) == sorted(list(combo)) and (play_type == PASS or card_list[0] < combo[0]):
-                    return combo_type, combo
+                if sorted(list(card_input)) == sorted(list(combo)):
+                    if play_type == PASS or card_list[0] < combo[0]:
+                        return combo_type, combo
+                    if play_type not in [BOMB, KING_BOMB] and combo_type in [BOMB, KING_BOMB]:
+                        return combo_type, combo
         raise ValueError('Invalid Play')

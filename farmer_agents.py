@@ -29,7 +29,7 @@ class AlphaBetaAgent(MultiAgentSearch):
 
     def __init__(self, agent_id):
         Agents.__init__(self, agent_id)
-        self.max_depth = 3
+        self.max_depth = 2
 
     # successors is a list of tuple (play_type, card_list)
     def get_action(self, board_state):
