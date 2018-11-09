@@ -1,6 +1,6 @@
 from hand import Hand
 from util import raise_not_defined
-from constants import card_pretty_name
+from constants import card_rating
 
 class Agents:
     def __init__(self, agent_id):
@@ -25,8 +25,9 @@ class MultiAgentSearch(Agents):
             return 1000
         if board.is_loose(board.turn):
             return -1000
-        return 20 - len(board.get_hands(board.turn))
-        # return 0
+        # return 20 - len(board.get_hands(board.turn))
+        hand = board.get_hands(board.turn)
+        return sum(card_rating[c] for c in hand) - (20 + len(hand))
 
     def is_terminal(self, depth, board):
         return board.is_terminal or depth >= self.max_depth
@@ -45,7 +46,7 @@ class ManualAgent(Agents):
             result = input('What are you going to play?\n')
             try:
                 card_list = result.split(',')
-                card_list_int = sorted(list(map(int, card_list)))
+                card_list_int = list(map(int, card_list))
                 play = tuple(card_list_int)
                 combo_type = Hand.get_combo_type(board.previous_play, play)
                 return combo_type, play

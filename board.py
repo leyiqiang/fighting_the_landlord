@@ -6,7 +6,6 @@ from collections import Counter
 from hand import Hand
 
 
-# # the classes in this file is badly designed
 # class BoardData(object):
 #     # track the state of the game
 #     def __init__(self, prev_data=None):

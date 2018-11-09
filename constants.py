@@ -62,6 +62,26 @@ TWO = 12
 BLACK_JOKER = 13
 RED_JOKER = 14
 
+"""
+evaluate the utility of each card
+"""
+card_rating = {
+    THREE: -7,
+    FOUR: -5,
+    FIVE: -3,
+    SIX: -1,
+    SEVEN: 0,
+    EIGHT: 1,
+    NINE: 3,
+    TEN: 4,
+    J: 5,
+    Q: 6,
+    K: 7,
+    A: 8,
+    TWO: 9,
+    BLACK_JOKER: 11,
+    RED_JOKER: 12
+}
 
 card_pretty_name = {
     THREE: '3',
