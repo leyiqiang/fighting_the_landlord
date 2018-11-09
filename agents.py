@@ -49,11 +49,12 @@ class ManualAgent(Agents):
                 if card_list[0] == 'PASS':
                     combo_type = 'PASS'
                     play = ()
+                    return combo_type, play
                 else:
                     card_list_int = list(map(int, card_list))
                     play = tuple(card_list_int)
-                    combo_type = Hand.get_combo_type(board.previous_play, play)
-                return combo_type, play
+                    action = Hand.get_combo_type(board.previous_play, play)
+                return action
             except Exception as e:
                 print('Invalid input or play, please try again.')
 

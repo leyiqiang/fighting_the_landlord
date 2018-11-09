@@ -44,10 +44,11 @@ class Hand(object):
         # current_hand = Counter(card_list)
         play_type, card_list = previous_play
         if card_input == PASS:
-            return PASS
+            return PASS, ()
         for combo_type, combo_list in card_combinations.items():
             for combo in combo_list:
                 intersection = (Counter(combo) & Counter(card_input)).elements()
                 if len(list(intersection)) == len(card_input) and (play_type == PASS or card_list[0] < combo[0]):
-                    return combo_type
+                    print(combo[0])
+                    return combo_type, combo
         raise ValueError('Invalid Play')
