@@ -27,7 +27,7 @@ class MultiAgentSearch(Agents):
             return -1000
         # return 20 - len(board.get_hands(board.turn))
         hand = board.get_hands(board.turn)
-        return sum(card_rating[c] for c in hand) - (20 + len(hand))
+        return sum(card_rating[c] for c in hand) - len(hand)
 
     def is_terminal(self, depth, board):
         return board.is_terminal or depth >= self.max_depth
@@ -53,9 +53,8 @@ class ManualAgent(Agents):
                 else:
                     card_list_int = list(map(int, card_list))
                     play = tuple(card_list_int)
-                    action = Hand.get_combo_type(board.previous_play, play)
+                    action = Hand.get_combo_type(board.previous_play, play, board.combos[self.agent_id])
                 return action
             except Exception as e:
                 print('Invalid input or play, please try again.')
-
 

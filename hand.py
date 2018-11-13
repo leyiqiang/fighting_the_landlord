@@ -49,16 +49,22 @@ class Hand(object):
     #     counter = self._card_counter - Counter(card_list)
     #     return list(counter.elements())
     @staticmethod
-    def get_combo_type(previous_play, card_input):
+    def get_combo_type(previous_play, card_input, combos):
         # current_hand = Counter(card_list)
         play_type, card_list = previous_play
         if card_input == PASS:
             return PASS, ()
-        for combo_type, combo_list in card_combinations.items():
-            for combo in combo_list:
-                if sorted(list(card_input)) == sorted(list(combo)):
-                    if play_type == PASS or card_list[0] < combo[0]:
-                        return combo_type, combo
-                    if play_type not in [BOMB, KING_BOMB] and combo_type in [BOMB, KING_BOMB]:
-                        return combo_type, combo
+        # for combo_type, combo_list in card_combinations.items():
+            # for combo in combo_list:
+                # if sorted(list(card_input)) == sorted(list(combo)):
+        successors = Hand.get_successors(previous_play, card_input, combos)
+        for successor_type, successor_list in successors:
+            if len(successor_list) == len(card_input):
+                return successor_type, card_input
+
+                    # if play_type == PASS or card_list[0] < combo[0]:
+                    #     return combo_type, combo
+                    # if play_type not in [BOMB, KING_BOMB] and combo_type in [BOMB, KING_BOMB]:
+                    #     return combo_type, combo
+
         raise ValueError('Invalid Play')

@@ -19,8 +19,8 @@ king bomb: respectively – colored joker with black-and-white joker cards
 SINGLE = 'SINGLE'
 PAIR = 'PAIR'
 TRIO = 'TRIO'
-CHAIN = 'CHAIN'
-PAIRS_CHAIN = 'PAIRS_CHAIN'  # 5 or more consecutive numbered cards
+CHAIN = 'CHAIN'  # 5 or more consecutive numbered cards
+PAIRS_CHAIN = 'PAIRS_CHAIN'  # 5 or more consecutive numbered pairs
 TRIO_SINGLE = 'TRIO_SINGLE'  # trio with single card
 TRIO_PAIR = 'TRIO_PAIR'  # trio with pair
 AIRPLANE = 'AIRPLANE'  # two or more consecutive trios
