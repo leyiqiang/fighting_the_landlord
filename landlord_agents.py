@@ -129,8 +129,8 @@ class MCTAgent(Agents):
         Agents.__init__(self, agent_id)
         self.wins = {}  # a (agent_id, state): count dict
         self.plays = {}  # a (agent_id, state): count dict
-        self.depth = 80
-        self.simulation_time = 500
+        self.depth = 60
+        self.simulation_time = 800
         # self.board_states = []
 
     def get_action(self, board):
