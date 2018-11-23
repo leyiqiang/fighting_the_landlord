@@ -97,10 +97,11 @@ class BoardData(object):
     """
     make sure the hash are the same if the state is the same
     """
-    def formalize(self):
-        return self.winner, tuple(sorted(self.hands[LANDLORD])), \
-               tuple(sorted(self.hands[FARMER_ONE])), \
-               tuple(sorted(self.hands[FARMER_TWO]))
+    def formalize(self, agent_id):
+        return tuple(sorted(self.hands[agent_id]))
+        # return tuple(sorted(self.hands[LANDLORD])), \
+        #        tuple(sorted(self.hands[FARMER_ONE])), \
+        #        tuple(sorted(self.hands[FARMER_TWO]))
 
 
 class DeterministicBoardData(BoardData):
