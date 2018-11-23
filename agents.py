@@ -2,6 +2,7 @@ from hand import Hand
 from util import raise_not_defined
 from constants import card_rating
 
+
 class Agents:
     def __init__(self, agent_id):
         self.agent_id = agent_id

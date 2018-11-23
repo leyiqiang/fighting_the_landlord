@@ -33,6 +33,12 @@ class Hand(object):
             successors.append((PASS, ()))
             return successors
 
+    """
+    A function used for non-deterministic environment
+    """
+    def get_possible_successors(self, previous_play, visible_cards, discarded_cards):
+        pass
+
     @staticmethod
     def get_all_combos(initial_hand):
         current_hand = Counter(initial_hand)
@@ -61,7 +67,6 @@ class Hand(object):
         for successor_type, successor_list in successors:
             if len(successor_list) == len(card_input):
                 return successor_type, card_input
-
                     # if play_type == PASS or card_list[0] < combo[0]:
                     #     return combo_type, combo
                     # if play_type not in [BOMB, KING_BOMB] and combo_type in [BOMB, KING_BOMB]:

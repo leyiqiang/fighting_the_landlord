@@ -1,38 +1,11 @@
 from constants import *
 import random
 from util import CardCombinations, deal
-import copy
 from collections import Counter
 from hand import Hand
 
 
-# class BoardData(object):
-#     # track the state of the game
-#     def __init__(self, prev_data=None):
-#         if prev_data:
-#             self.base_card = prev_data.base_card  # the card landlord holds
-#             self.discarded_card = prev_data.discarded_card  # discarded cards
-#             self.previous_play = prev_data.previous_play
-#             self.agent_order = prev_data.agent_order
-#             self.current_turn = prev_data.current_turn
-#             self.pass_count = prev_data.pass_count
-#             self.card_combinations = prev_data.card_combinations
-#             self.is_terminal = prev_data.is_terminal
-#             self.winner = prev_data.winner
-#         else:
-#             self.base_card = []  # the card landlord holds
-#             self.discarded_card = []  # discarded cards
-#             self.previous_play = (PASS, [])
-#             farmer_order = random.sample([FARMER_ONE, FARMER_TWO], 2)
-#             self.agent_order = [LANDLORD] + farmer_order
-#             self.current_turn = LANDLORD
-#             self.pass_count = 0
-#             self.card_combinations = CardCombinations()
-#             self.is_terminal = False
-#             self.winner = None
-
-
-class HandsFaceUpBoardData(object):
+class BoardData(object):
     def __init__(self, prev_data=None):
         if prev_data is not None:
             self.base_card = prev_data.base_card  # the card landlord holds
@@ -69,8 +42,8 @@ class HandsFaceUpBoardData(object):
                 FARMER_TWO: Hand.get_all_combos(self.hands[FARMER_TWO]),
             }
 
-    def copy(self):
-        state = HandsFaceUpBoardData(self)
+    def copy(self, BoardClass):
+        state = BoardClass(self)
         state.base_card = self.base_card
         state.discarded_card = self.discarded_card
         state.previous_play = self.previous_play
@@ -99,30 +72,6 @@ class HandsFaceUpBoardData(object):
         current_turn_index = self.agent_order.index(self.turn)
         return self.agent_order[(current_turn_index + 1) % 3]
 
-    def next_state(self, action):
-        next_state = self.copy()
-        play_type, card_list = action
-        card_left = Counter(self.get_hands(self.turn)) - Counter(card_list)
-        if len(card_left) == 0:
-            next_state.is_terminal = True
-            next_state.winner = self.turn
-        if play_type == PASS and self.pass_count < 1:
-            next_state.pass_count += 1
-            next_state.turn = self.get_next_player()
-            return next_state
-        if play_type != PASS:
-            next_state.pass_count = 0
-        next_state.previous_play = (play_type, card_list)
-        next_state.hands[self.turn] = list(card_left.elements())
-        next_state.turn = self.get_next_player()
-        next_state.discarded_card = self.discarded_card + list(card_list)
-        return next_state
-
-    def get_actions(self, agent_id):
-        current_hand = self.get_hands(agent_id)
-        actions = Hand.get_successors(self.previous_play, current_hand, self.combos[agent_id])
-        return actions
-
     def get_hands(self, agent_id):
         return self.hands[agent_id]
 
@@ -144,3 +93,49 @@ class HandsFaceUpBoardData(object):
     def get_position(self, agent_id):
         pos = self.agent_order.index(agent_id)
         return pos
+
+    """
+    make sure the hash are the same if the state is the same
+    """
+    def formalize(self):
+        return self.winner, tuple(sorted(self.hands[LANDLORD])), \
+               tuple(sorted(self.hands[FARMER_ONE])), \
+               tuple(sorted(self.hands[FARMER_TWO]))
+
+
+class DeterministicBoardData(BoardData):
+    def next_state(self, action):
+        next_state = self.copy(DeterministicBoardData)
+        play_type, card_list = action
+        card_left = Counter(self.get_hands(self.turn)) - Counter(card_list)
+        if len(card_left) == 0:
+            next_state.is_terminal = True
+            next_state.winner = self.turn
+        if play_type == PASS and self.pass_count < 1:
+            next_state.pass_count += 1
+            next_state.turn = self.get_next_player()
+            return next_state
+        if play_type != PASS:
+            next_state.pass_count = 0
+        next_state.previous_play = (play_type, card_list)
+        next_state.hands[self.turn] = list(card_left.elements())
+        next_state.turn = self.get_next_player()
+        next_state.discarded_card = self.discarded_card + list(card_list)
+        return next_state
+
+    def get_actions(self, agent_id=None):
+        if self.is_terminal:
+            return []
+        if agent_id is None:
+            agent_id = self.turn
+        current_hand = self.get_hands(agent_id)
+        actions = Hand.get_successors(self.previous_play, current_hand, self.combos[agent_id])
+        return actions
+
+
+class NonDeterministicBoardData(BoardData):
+    def next_state(self, action):
+        pass
+
+    def get_actions(self, agent_id):
+        pass

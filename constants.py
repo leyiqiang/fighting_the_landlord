@@ -66,21 +66,21 @@ RED_JOKER = 14
 evaluate the utility of each card
 """
 card_rating = {
-    THREE: -7,
+    THREE: -6,
     FOUR: -5,
-    FIVE: -3,
-    SIX: -1,
-    SEVEN: 0,
-    EIGHT: 1,
-    NINE: 3,
-    TEN: 4,
-    J: 5,
-    Q: 6,
-    K: 7,
-    A: 8,
-    TWO: 9,
-    BLACK_JOKER: 11,
-    RED_JOKER: 12
+    FIVE: -4,
+    SIX: -3,
+    SEVEN: -2,
+    EIGHT: -1,
+    NINE: 0,
+    TEN: 1,
+    J: 2,
+    Q: 3,
+    K: 4,
+    A: 5,
+    TWO: 6,
+    BLACK_JOKER: 7,
+    RED_JOKER: 8
 }
 
 card_pretty_name = {

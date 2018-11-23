@@ -85,3 +85,15 @@ class AlphaBetaAgent(MultiAgentSearch):
                     return max_val
                 alpha = max(alpha, max_val)
             return max_val
+
+
+class MCTAgent(Agents):
+    def __init__(self, agent_id):
+        Agents.__init__(self, agent_id)
+        self.wins = {}  # a (agent_id, state): count dict
+        self.plays = {}  # a (agent_id, state): count dict
+        self.max_moves = 20
+        # self.board_states = []
+
+    def get_action(self, board):
+        pass

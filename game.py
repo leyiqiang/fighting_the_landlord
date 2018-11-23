@@ -1,15 +1,14 @@
-from board import HandsFaceUpBoardData
+from board import DeterministicBoardData
 from input_parser import InputParser
 import farmer_agents
 import landlord_agents
 from constants import *
 import random
-import copy
 
 
 class FightingWithLandlordGame(object):
     def __init__(self):
-        self.board_state = HandsFaceUpBoardData()
+        self.board_state = DeterministicBoardData()
         self._landlord = None
         self._farmer_one = None
         self._farmer_two = None
@@ -34,15 +33,15 @@ class FightingWithLandlordGame(object):
             self._landlord = LandlordAgents(LANDLORD)
             self._farmer_one = FarmerAgents(FARMER_ONE)
             self._farmer_two = PlayerAgents(FARMER_TWO)
-        if player == LANDLORD:
+        if player == LANDLORD or True:
             print('You are landlord!')
             PlayerAgents = getattr(landlord_agents, game_parser.player_agent)
             self._landlord = PlayerAgents(LANDLORD)
             self._farmer_one = FarmerAgents(FARMER_ONE)
             self._farmer_two = FarmerAgents(FARMER_TWO)
-        # print('landlord hand:{}'.format(sorted(self.board_state.hands[LANDLORD])))
-        # print('farmer1 hand:{}'.format(sorted(self.board_state.hands[FARMER_ONE])))
-        # print('farmer2 hand:{}'.format(sorted(self.board_state.hands[FARMER_TWO])))
+        print('landlord hand:{}'.format(sorted(self.board_state.get_hands(LANDLORD))))
+        print('farmer1 hand:{}'.format(sorted(self.board_state.get_hands(FARMER_ONE))))
+        print('farmer2 hand:{}'.format(sorted(self.board_state.get_hands(FARMER_TWO))))
 
     def start_game(self):
         print('***GAME START***')
