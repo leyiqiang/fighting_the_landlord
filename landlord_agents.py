@@ -174,7 +174,7 @@ class MCTAgent(Agents):
         visited_states = [s for s in next_states if s.formalize(self.agent_id) in self.plays.keys()]
         if len(visited_states) <= 0:
             return self.random_select(parent_states, unvisited_states)
-        if len(unvisited_states) <= 0 or random.uniform(0, 1) < 0.9:  # too many options, need to force exploitation
+        if len(unvisited_states) <= 0 or random.uniform(0, 1) < 0.5:  # too many options, need to force exploitation
             next_node = self.ucb1_select(visited_states)
             parent_states.add(next_node.formalize(self.agent_id))
             return self.select_state(next_node, parent_states)
