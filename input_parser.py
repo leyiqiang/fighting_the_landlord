@@ -23,6 +23,10 @@ class InputParser:
         return self._input_args.manual
 
     @property
+    def evaluation(self):
+        return self._input_args.evaluation
+
+    @property
     def is_debug_mode(self):
         return self._input_args.debug
 
@@ -44,6 +48,12 @@ class InputParser:
                                   required=False,
                                   default='ReflexAgent')
 
+    def _set_evaluation(self):
+        self._parser.add_argument('-e', '--evaluation',
+                                  help='Evaluation or rollout policy used for agent',
+                                  required=False,
+                                  default='random')
+
     def _set_manual(self):
         self._parser.add_argument('-m', '--manual',
                                   help='For manual play',
@@ -60,6 +70,7 @@ class InputParser:
         self._set_farmer_agent()
         self._set_landlord_agent()
         self._set_player_agent()
+        self._set_evaluation()
         self._set_manual()
         self._set_debug_mod()
         self._input_args = self._parser.parse_args()

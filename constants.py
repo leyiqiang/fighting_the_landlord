@@ -106,3 +106,11 @@ Rounds
 LANDLORD = 'LANDLORD'
 FARMER_ONE = 'FARMER_ONE'
 FARMER_TWO = 'FARMER_TWO'
+
+"""
+Types of Policies
+"""
+RANDOM = 'random'
+LONGEST_COMBO = 'longest_combo'
+EVALUATION = 'evaluation'
+CARD_VALUE = 'card_value'

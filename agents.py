@@ -1,11 +1,12 @@
 from hand import Hand
 from util import raise_not_defined
-from constants import card_rating
+from constants import card_rating, RANDOM, LONGEST_COMBO, EVALUATION
 
 
 class Agents:
-    def __init__(self, agent_id):
+    def __init__(self, agent_id, evaluation=RANDOM):
         self.agent_id = agent_id
+        self.evaluation = evaluation
     # def get_successors(self, board):
     #     print(self._hand.card_list)
     #     successors = self._hand.get_successors(board.previous_play, board.card_combinations)
@@ -35,8 +36,8 @@ class MultiAgentSearch(Agents):
 
 
 class ManualAgent(Agents):
-    def __init__(self, card_list):
-        Agents.__init__(self, card_list)
+    def __init__(self, card_list, evaluation):
+        Agents.__init__(self, card_list, evaluation)
 
     def get_action(self, board):
         while True:

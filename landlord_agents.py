@@ -1,6 +1,10 @@
+import time
+
 from agents import Agents, MultiAgentSearch, ManualAgent
 import random
 import math
+
+from constants import RANDOM, LONGEST_COMBO, EVALUATION, CARD_VALUE, card_rating
 
 
 class ReflexAgent(Agents):
@@ -20,8 +24,8 @@ class MiniMaxAgent(MultiAgentSearch):
     """
     A minimax agent will take really long time to calculate
     """
-    def __init__(self, agent_id):
-        Agents.__init__(self, agent_id)
+    def __init__(self, agent_id, evaluation):
+        Agents.__init__(self, agent_id, evaluation)
         self.max_depth = 2
 
     # successors is a list of tuple (play_type, card_list)
@@ -67,8 +71,8 @@ class MiniMaxAgent(MultiAgentSearch):
 
 class AlphaBetaAgent(MultiAgentSearch):
 
-    def __init__(self, agent_id):
-        Agents.__init__(self, agent_id)
+    def __init__(self, agent_id, evaluation):
+        Agents.__init__(self, agent_id, evaluation)
         self.max_depth = 2
 
     # successors is a list of tuple (play_type, card_list)
@@ -125,19 +129,20 @@ class AlphaBetaAgent(MultiAgentSearch):
 
 
 class MCTAgent(Agents):
-    def __init__(self, agent_id):
-        Agents.__init__(self, agent_id)
+    def __init__(self, agent_id, evaluation):
+        Agents.__init__(self, agent_id, evaluation)
         self.wins = {}  # a (agent_id, state): count dict
         self.plays = {}  # a (agent_id, state): count dict
         self.depth = 60
-        self.simulation_time = 800
+        self.simulation_time = 20
         # self.board_states = []
 
     def get_action(self, board):
         iteration = 0
         actions = board.get_actions(self.agent_id)
 
-        for i in range(0, self.simulation_time):
+        timeout = time.time() + self.simulation_time
+        while time.time() < timeout:
             iteration += 1
             parent_states = set()
             selected_state = self.select_state(board, parent_states)
@@ -210,7 +215,7 @@ class MCTAgent(Agents):
             if len(action_list) == 0:
                 print(action_list)
 
-            selected_state = self.rollout_policy(selected_state, action_list)
+            selected_state = self.rollout_policy(selected_state, action_list, self.evaluation)
             if selected_state.is_terminal:
                 if selected_state.winner == self.agent_id:
                     return 1
@@ -218,9 +223,23 @@ class MCTAgent(Agents):
                     return 0
         return 0
 
-    def rollout_policy(self, select_node, action_list):
+    def rollout_policy(self, select_node, action_list, roll_out_policy=RANDOM):
         # TODO use different heuristic
         action = random.choice(action_list)
+        if roll_out_policy == RANDOM:
+            action = random.choice(action_list)
+        if roll_out_policy == LONGEST_COMBO:
+            action = max(len(a[1]) for a in action_list)
+        if roll_out_policy == CARD_VALUE:
+            max_score = float('-inf')
+            for a in action_list:
+                type, hand = a
+                total_ratings = sum(card_rating[c] for c in hand)
+                if max_score < total_ratings:
+                    max_score = total_ratings
+                    action = a
+        if roll_out_policy == EVALUATION:
+            pass
         return select_node.next_state(action)
 
     def back_propagation(self, visited_node, reward):
