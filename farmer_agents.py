@@ -18,21 +18,21 @@ class MiniMaxAgent(MultiAgentSearch):
     A minimax agent will take very long time to finish, I will only implement the Alpha Beta pruning version
     """
 
-    def __init__(self, agent_id, evaluation):
+    def __init__(self, agent_id, evaluation, depth=2):
         Agents.__init__(self, agent_id, evaluation)
-        self.max_depth = 2
+        self.max_depth = depth
 
 
 class ManualTerminalAgent(ManualAgent):
     def __init__(self, agent_id):
-        ManualAgent.__init__(self, agent_id)
+        ManualAgent.__init__(self, agent_id, None)
 
 
 class AlphaBetaAgent(MultiAgentSearch):
 
-    def __init__(self, agent_id, evaluation):
+    def __init__(self, agent_id, evaluation, depth=2):
         Agents.__init__(self, agent_id, evaluation)
-        self.max_depth = 2
+        self.max_depth = depth
 
     # successors is a list of tuple (play_type, card_list)
     def get_action(self, board_state):
@@ -57,7 +57,7 @@ class AlphaBetaAgent(MultiAgentSearch):
         min_val = float('+inf')
         actions = current_state.get_actions(current_state.turn)
         if self.is_terminal(current_depth, current_state):
-            return self.evaluate(current_state)
+            return self.evaluate(current_state, self.evaluation)
         for a in actions:
             next_state = current_state.next_state(a)
             min_val = min(min_val, self.get_max_value(current_depth, next_state, alpha, beta))
@@ -69,7 +69,7 @@ class AlphaBetaAgent(MultiAgentSearch):
     def get_max_value(self, current_depth, current_state, alpha, beta):
         max_val = float('-inf')
         if self.is_terminal(current_depth, current_state):
-            return self.evaluate(current_state)
+            return self.evaluate(current_state, self.evaluation)
         if current_state.get_position(current_state.turn) == 2:
             actions = current_state.get_actions(current_state.turn)
             for a in actions:
@@ -96,7 +96,7 @@ class MCTAgent(Agents):
         self.wins = {}  # a (agent_id, state): count dict
         self.plays = {}  # a (agent_id, state): count dict
         self.depth = 60
-        self.simulation_time = 20
+        self.simulation_time = 10
         # self.board_states = []
 
     def get_action(self, board):

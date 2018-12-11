@@ -1,6 +1,6 @@
 from hand import Hand
 from util import raise_not_defined
-from constants import card_rating, RANDOM, LONGEST_COMBO, EVALUATION
+from constants import card_rating, RANDOM, LONGEST_COMBO, EVALUATION, CARD_VALUE
 
 
 class Agents:
@@ -22,14 +22,20 @@ class MultiAgentSearch(Agents):
         Agents.__init__(self, agent_id)
         self.max_depth = max_depth
 
-    def evaluate(self, board):
-        if board.is_win(board.turn):
+    def evaluate(self, board, evaluation):
+        if board.is_win(self.agent_id):
             return 1000
-        if board.is_loose(board.turn):
+        if board.is_loose(self.agent_id):
             return -1000
         # return 20 - len(board.get_hands(board.turn))
-        hand = board.get_hands(board.turn)
-        return sum(card_rating[c] for c in hand) - len(hand)
+        hand = board.get_hands(self.agent_id)
+        if evaluation == EVALUATION:
+            return sum(card_rating[c] for c in hand) + 20 - len(hand)
+        elif evaluation == CARD_VALUE:
+            return sum(card_rating[c] for c in hand)
+        # evaluation == MAX length
+        else:
+            return 20 - len(hand)
 
     def is_terminal(self, depth, board):
         return board.is_terminal or depth >= self.max_depth

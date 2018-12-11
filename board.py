@@ -104,9 +104,9 @@ class BoardData(object):
         #        tuple(sorted(self.hands[FARMER_TWO]))
 
 
-class DeterministicBoardData(BoardData):
+class GameBoardData(BoardData):
     def next_state(self, action):
-        next_state = self.copy(DeterministicBoardData)
+        next_state = self.copy(GameBoardData)
         play_type, card_list = action
         card_left = Counter(self.get_hands(self.turn)) - Counter(card_list)
         if len(card_left) == 0:

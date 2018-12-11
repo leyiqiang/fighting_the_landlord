@@ -114,3 +114,9 @@ RANDOM = 'random'
 LONGEST_COMBO = 'longest_combo'
 EVALUATION = 'evaluation'
 CARD_VALUE = 'card_value'
+
+"""
+Types of Agents
+"""
+MCT_AGENT = 'MCTAgent'
+ALPHA_BETA_AGENT = 'AlphaBetaAgent'

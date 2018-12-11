@@ -15,8 +15,8 @@ class InputParser:
         return self._input_args.farmer
 
     @property
-    def player_agent(self):
-        return self._input_args.player
+    def farmer_two_agent(self):
+        return self._input_args.f2
 
     @property
     def is_manual_mode(self):
@@ -25,6 +25,10 @@ class InputParser:
     @property
     def evaluation(self):
         return self._input_args.evaluation
+
+    @property
+    def rollout_policy(self):
+        return self._input_args.rollout
 
     @property
     def is_debug_mode(self):
@@ -42,15 +46,21 @@ class InputParser:
                                   required=False,
                                   default='ReflexAgent')
 
-    def _set_player_agent(self):
-        self._parser.add_argument('-p', '--player',
-                                  help='Agent used for player(yourself)',
+    def _set_farmer_two_agent(self):
+        self._parser.add_argument('-f2', '--farmer2',
+                                  help='Second Farmer',
                                   required=False,
                                   default='ReflexAgent')
 
     def _set_evaluation(self):
         self._parser.add_argument('-e', '--evaluation',
-                                  help='Evaluation or rollout policy used for agent',
+                                  help='Rollout policy used for agent',
+                                  required=False,
+                                  default='random')
+
+    def _set_rollout_policy(self):
+        self._parser.add_argument('-r', '--rollout',
+                                  help='Rollout policy used for agent',
                                   required=False,
                                   default='random')
 
@@ -69,8 +79,9 @@ class InputParser:
     def parse_input(self):
         self._set_farmer_agent()
         self._set_landlord_agent()
-        self._set_player_agent()
+        self._set_farmer_two_agent()
         self._set_evaluation()
+        self._set_rollout_policy()
         self._set_manual()
         self._set_debug_mod()
         self._input_args = self._parser.parse_args()
