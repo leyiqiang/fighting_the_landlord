@@ -52,16 +52,16 @@ class DataCollector(object):
 
 if __name__ == '__main__':
     f = open('minimax_depth.txt', 'a')
-    for i in range(0, 100):
+    # for i in range(0, 100):
+    #     DataCollector.start_game(ALPHA_BETA_AGENT, ALPHA_BETA_AGENT, EVALUATION, EVALUATION, f, landlord_depth=2,
+    #                              farmer_depth=2)
+    # for i in range(0, 100):
+    #     DataCollector.start_game(ALPHA_BETA_AGENT, ALPHA_BETA_AGENT, EVALUATION, EVALUATION, f, landlord_depth=3,
+    #                              farmer_depth=3)
+    for i in range(0, 10):
         DataCollector.start_game(ALPHA_BETA_AGENT, ALPHA_BETA_AGENT, EVALUATION, EVALUATION, f, landlord_depth=2,
-                                 farmer_depth=2)
-    for i in range(0, 100):
-        DataCollector.start_game(ALPHA_BETA_AGENT, ALPHA_BETA_AGENT, EVALUATION, EVALUATION, f, landlord_depth=3,
                                  farmer_depth=3)
-    for i in range(0, 100):
-        DataCollector.start_game(ALPHA_BETA_AGENT, ALPHA_BETA_AGENT, EVALUATION, EVALUATION, f, landlord_depth=2,
-                                 farmer_depth=3)
-    for i in range(0, 100):
+    for i in range(0, 10):
         DataCollector.start_game(ALPHA_BETA_AGENT, ALPHA_BETA_AGENT, EVALUATION, EVALUATION, f, landlord_depth=3,
                                  farmer_depth=2)
     f.close()
@@ -93,12 +93,12 @@ if __name__ == '__main__':
         DataCollector.start_game(MCT_AGENT, ALPHA_BETA_AGENT, RANDOM, EVALUATION, f2, landlord_depth=3)
     for i in range(0, 100):
         DataCollector.start_game(ALPHA_BETA_AGENT, MCT_AGENT, EVALUATION, RANDOM, f2, farmer_depth=3)
-    # for i in range(0, 100):
-    #     DataCollector.start_game(MCT_AGENT, ALPHA_BETA_AGENT, RANDOM, LONGEST_COMBO, f2, landlord_depth=3)
-    # for i in range(0, 100):
-    #     DataCollector.start_game(ALPHA_BETA_AGENT, MCT_AGENT, LONGEST_COMBO, RANDOM, f2, farmer_depth=3)
-    # for i in range(0, 100):
-    #     DataCollector.start_game(MCT_AGENT, ALPHA_BETA_AGENT, RANDOM, CARD_VALUE, f2, landlord_depth=3)
-    # for i in range(0, 100):
-    #     DataCollector.start_game(ALPHA_BETA_AGENT, MCT_AGENT, CARD_VALUE, RANDOM, f2, farmer_depth=3)
+    for i in range(0, 100):
+        DataCollector.start_game(MCT_AGENT, ALPHA_BETA_AGENT, RANDOM, LONGEST_COMBO, f2, landlord_depth=3)
+    for i in range(0, 100):
+        DataCollector.start_game(ALPHA_BETA_AGENT, MCT_AGENT, LONGEST_COMBO, RANDOM, f2, farmer_depth=3)
+    for i in range(0, 100):
+        DataCollector.start_game(MCT_AGENT, ALPHA_BETA_AGENT, RANDOM, CARD_VALUE, f2, landlord_depth=3)
+    for i in range(0, 100):
+        DataCollector.start_game(ALPHA_BETA_AGENT, MCT_AGENT, CARD_VALUE, RANDOM, f2, farmer_depth=3)
     f2.close()
