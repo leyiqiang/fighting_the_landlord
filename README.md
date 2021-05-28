@@ -36,8 +36,11 @@ python ./game.py
 ###Rollout Policies:
 
 **random**: randomly select plays.
+
 **longest_combo**: select combo with the largest amount of cards.
+
 **card_value**: select combo with highest sum of values (see card values in constants.py).
+
 **evaluation**: select combo with highest sum of evaluation points(see card_rating in constants.py).
 
 ## How to Play (ManualAgent)
