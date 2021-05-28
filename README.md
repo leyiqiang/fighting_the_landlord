@@ -34,6 +34,14 @@ Agent Types:
 
 **MCTAgent**: Play cards using MCTS algorithm (slow). 
 
+<br />
+Rollout Polocies:
+
+**random**: randomly select plays.
+**longest_combo**: select combo with the largest amount of cards.
+**card_value**: select combo with highest sum of values (see card values in constants.py).
+**evaluation**: select combo with highest sum of evaluation points(see card_rating in constants.py).
+
 ## How to Play (ManualAgent)
 Play card numbers separated by commas, type "PASS" to pass current turn.
 
