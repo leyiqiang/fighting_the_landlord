@@ -51,7 +51,7 @@ class ManualAgent(Agents):
             sorted_hand = sorted(board.get_hands(board.turn))
             # sorted_hand_pretty = [card_pretty_name[name] for name in sorted_hand]
             print(sorted_hand)
-            result = input('What are you going to play?\n')
+            result = input(board.turn + ', what are you going to play?\n')
             try:
                 card_list = result.split(',')
                 if card_list[0] == 'PASS':

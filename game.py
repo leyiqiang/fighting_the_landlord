@@ -3,7 +3,6 @@ from input_parser import InputParser
 import farmer_agents
 import landlord_agents
 from constants import *
-import random
 
 
 class FightingWithLandlordGame(object):
@@ -24,7 +23,7 @@ class FightingWithLandlordGame(object):
         LandlordAgents = getattr(landlord_agents, game_parser.landlord_agent)
         FarmerAgents = getattr(farmer_agents, game_parser.farmer_agent)
         evaluation = game_parser.evaluation
-        rollout_policy = game_parser.rollout_policy
+        # rollout_policy = game_parser.rollout_policy
         # if player == FARMER_ONE:
         #     PlayerAgents = getattr(farmer_agents, game_parser.farmer_two_agent)
         #     print('You are farmer1!')
