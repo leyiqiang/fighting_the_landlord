@@ -12,7 +12,7 @@ python ./game.py
 
 ## Usages
 
-Optional Arguments:
+###Optional Arguments:
 
 | Parameter                 | Default       | Description   |	
 | :------------------------ |:-------------:| :-------------|
@@ -21,8 +21,7 @@ Optional Arguments:
 | -e --evaluation 	       |	Random           |Rollout policy used for agents
 | -d --debug 	       |	False           |Set debug mode of the program
 
-<br />
-Agent Types:
+###Agent Types:
 
 **ReflexAgent**: Play cards automatically by randomly select available combos.
 
@@ -34,8 +33,7 @@ Agent Types:
 
 **MCTAgent**: Play cards using MCTS algorithm (slow). 
 
-<br />
-Rollout Polocies:
+###Rollout Policies:
 
 **random**: randomly select plays.
 **longest_combo**: select combo with the largest amount of cards.
@@ -45,7 +43,7 @@ Rollout Polocies:
 ## How to Play (ManualAgent)
 Play card numbers separated by commas, type "PASS" to pass current turn.
 
-Card values:
+###Card values:
 ```
 Red Joker > Black Joker > 2 > A > K > Q > J ...
 Color doesn't matter
